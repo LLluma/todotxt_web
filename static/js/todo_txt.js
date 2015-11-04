@@ -80,6 +80,9 @@ TodoTxtApp.TodoCompositeView = Backbone.Marionette.CompositeView.extend({
         TodoTxtApp.vent.on('todo:add', function(e) {
             self.addTask(e);
         });
+        TodoTxtApp.vent.on('todo:delete', function(e) {
+            self.deleteTask(e);
+        });
         TodoTxtApp.vent.on('todo:new', function(model) {
             self.collection.add(model);
             self.saveTodo();
@@ -96,6 +99,10 @@ TodoTxtApp.TodoCompositeView = Backbone.Marionette.CompositeView.extend({
         }
         var edit_view = new TodoTxtApp.TodoEditItemView({model: model});
         TodoTxtApp.editRegion.show(edit_view);
+    },
+    deleteTask: function(e) {
+        var elem_index = e.toElement.id.slice(1) - 6;  // ids starts from id="c6" instead of id="c1"
+        this.children.findByIndex(elem_index).remove();
     }
 });
 
@@ -110,6 +117,9 @@ TodoTxtApp.addInitializer(function() {
     });
     $('body').on('click', '.js-save-button', function(e) {
         self.vent.trigger('todo:save', e);
+    });
+    $('body').on('click', '.js-delete-item-button', function(e) {
+        self.vent.trigger('todo:delete', e);
     });
 });
 

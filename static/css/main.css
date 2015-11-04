@@ -6,6 +6,10 @@
     margin-right: 20px;
 }
 
+.js-delete-item-button {
+    position: absolute;
+}
+
 .js-save-button {
     position: fixed;
     bottom: 0px;

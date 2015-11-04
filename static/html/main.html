@@ -58,6 +58,11 @@
             <span class="project"><% _.each(projects, function(project) {print(' ' + project)}); %></span>
             <span class="context"><% _.each(contexts, function(context) {print(' ' + context)}); %></span>
         </td>
+        <td class="mdl-data-table__cell--non-numeric">
+            <button class="js-delete-item-button mdl-button">
+                <i class="material-icons" id="<%= cid %>">delete</i>
+            </button>
+        </td>
     </script>
     <script id="todo-edit" type="text/template">
         <textarea class="edit_box" rows="4" cols="50" placeholder="Please type todo">
