@@ -60,12 +60,17 @@ TodoItemView = Backbone.Marionette.ItemView.extend({
         checkbox: '.js-checkbox'
     },
     events: {
-        'change .js-checkbox': "recordTicked"
+        'change .js-checkbox': "recordTicked",
+        'click .js-delete-item-button': "deleteItem"
     },
     recordTicked: function(e) {
         var done = this.ui.checkbox.hasClass('is-checked');
         this.model.set('done', done);
         this.$el.toggleClass('js-done');
+    },
+    deleteItem: function(e) {
+        this.model.collection.remove(this.model);
+        this.remove();
     },
     onRender: function() {
         componentHandler.upgradeElements(this.el);

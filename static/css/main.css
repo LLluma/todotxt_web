@@ -37,6 +37,10 @@
 .todotxt__item .context {
     color: #4caf50;
 }
+.todotxt__item--delete-button {
+    vertical-align: middle !important;
+    padding: 0 !important;
+}
 
 #edit {
     position: relative;
