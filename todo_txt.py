@@ -28,7 +28,7 @@ class TodoTxt(object):
         """
         try:
             shutil.copy(self.file_name, self.file_name + BACKUP_EXT)
-            todo_fh = open(self.file_name, 'w')
+            todo_fh = open(self.file_name, 'wb')
             backup_fh = open(self.file_name + BACKUP_EXT)
             yield todo_fh, backup_fh
         finally:
@@ -106,7 +106,7 @@ class TodoTxt(object):
         """Convert representing list of dictionary to text and save"""
         with self._get_handlers() as (todo_fh, backup_fh):
             for line_dict in todo_list:
-                todo_fh.write(self.unserialize_line(line_dict) + "\n")
+                todo_fh.write(self.unserialize_line(line_dict).encode('UTF-8') + "\n")
 
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
