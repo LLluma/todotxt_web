@@ -34,6 +34,9 @@ TodoModel = Backbone.Model.extend({
         result.line = line_words.join(" ");
         return result;
     },
+    get_unserialized: function() {
+        return this.unserialize(this.model.toJSON());
+    },
     unserialize: function(obj) {
         var line = [];
         if (obj.done) {
@@ -61,7 +64,8 @@ TodoItemView = Backbone.Marionette.ItemView.extend({
     },
     events: {
         'change .js-checkbox': "recordTicked",
-        'click .js-delete-item-button': "deleteItem"
+        'click .js-delete-item-button': "deleteItem",
+        'dblclick': "editItem"
     },
     recordTicked: function(e) {
         var done = this.ui.checkbox.hasClass('is-checked');
@@ -71,6 +75,9 @@ TodoItemView = Backbone.Marionette.ItemView.extend({
     deleteItem: function(e) {
         this.model.collection.remove(this.model);
         this.remove();
+    },
+    editItem: function(e) {
+        TodoTxtApp.vent.trigger('todo:add', e, this.model);
     },
     onRender: function() {
         componentHandler.upgradeElements(this.el);
@@ -89,6 +96,12 @@ TodoEditItemView = Backbone.Marionette.ItemView.extend({
     },
     events: {
         'click .js-save-item-button': "saveItem"
+    },
+    serializeData: function() {
+        var result = this.constructor.__super__.serializeData.call(this);
+        result.unserialized = this.model.unserialize(result);
+        console.log(result.unserialized);
+        return result
     },
     saveItem: function(e) {
         this.model.set(this.model.serialize(this.ui.edit_box.val()));
@@ -109,8 +122,8 @@ TodoCompositeView = Backbone.Marionette.CompositeView.extend({
         TodoTxtApp.vent.on('todo:save', function(e) {
             self.saveTodo(e);
         });
-        TodoTxtApp.vent.on('todo:add', function(e) {
-            self.addTask(e);
+        TodoTxtApp.vent.on('todo:add', function(e, model) {
+            self.addTask(e, model);
         });
         TodoTxtApp.vent.on('todo:new', function(model) {
             self.collection.add(model);
