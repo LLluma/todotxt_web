@@ -86,7 +86,7 @@ TodoEditItemView = Backbone.Marionette.ItemView.extend({
         'click .js-save-item-button': "saveItem"
     },
     saveItem: function(e) {
-        this.model.set('line', this.ui.edit_box.val());
+        this.model.set(this.model.serialize(this.ui.edit_box.val()));
         TodoTxtApp.vent.trigger('todo:new', this.model);
         this.remove();
     }
