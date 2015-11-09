@@ -149,7 +149,6 @@ class TodoApplication(Application):
         settings = dict(
             template_path=os.path.join('static', 'html'),
             static_path=os.path.join('static'),
-            debug=True,
             cookie_secret=get_secret(secret_file),
             password_file=password_file,
             login_url='/login',
