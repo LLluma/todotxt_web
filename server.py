@@ -38,8 +38,8 @@ def update_password(password_file, password, salt):
 def get_secret(secret_file):
     """Return random string with length equals to SECRET_LENGTH"""
     secret_word = ''
-    if os.path.exists('secret'):
-        secret_word = open('secret').read().strip()
+    if os.path.exists(secret_file):
+        secret_word = open(secret_file).read()
     if len(secret_word) == SECRET_LENGTH:
         return secret_word
     else:
