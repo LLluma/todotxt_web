@@ -65,7 +65,8 @@ TodoItemView = Backbone.Marionette.ItemView.extend({
     events: {
         'change .js-checkbox': "recordTicked",
         'click .js-delete-item-button': "deleteItem",
-        'dblclick': "editItem"
+        'dblclick': "editItem",
+        'taphold': "editItem"
     },
     recordTicked: function(e) {
         var done = this.ui.checkbox.hasClass('is-checked');
