@@ -32,10 +32,10 @@ class TestTodoHandler(TestHandlerBase):
         if os.path.exists(options.todo_file):
             os.remove(options.todo_file)
 
-    def test_todo_handler_get(self):
-        response = self.fetch('/todo/')
-        self.assertEqual(response.code, 200)
-        self.assertIn('The first task', response.body)
+    # def test_todo_handler_get(self):
+        # response = self.fetch('/todo/')
+        # self.assertEqual(response.code, 200)
+        # self.assertIn('The first task', response.body)
 
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>todo.txt</title>
+
+    <link rel="stylesheet" href="static/lib/mdl/material.min.css">
+    <script src="static/lib/mdl/material.min.js"></script>
+    <link rel="stylesheet" href="static/lib/mdl/icon.css">
+    <link rel="stylesheet" href="static/css/main.css">
+    <link rel="icon" href="/static/img/favicon.ico" type="image/x-icon">
+
+</head>
+<body>
+    <div class="mdl-card mdl-shadow--2dp wrapper">
+        <form id="login_form" method="post" action="/login">
+            <div class="mdl-card__title text-center">
+                <h2 class="mdl-card__title-text">Login</h2>
+            </div>
+            <div class="mdl-card__supporting-text">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="password" id="password" name="password"/>
+                    <label class="mdl-textfield__label" for="password">Password</label>
+                </div>
+            </div>
+            <div class="mdl-card__actions mdl-card--border text-center">
+                <button type="submit" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--colored">
+                    Login
+                </button>
+            </div>
+        </form>
+
+    </div>
+</body>
+</html>
