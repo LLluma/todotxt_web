@@ -1,29 +1,27 @@
-.js-add-button {
-    position: fixed;
-    bottom: 0px;
-    right: 0px;
-    margin-bottom: 80px;
-    margin-right: 20px;
+.todotxt footer {
+    padding: 8px 8px;
 }
 
-.js-save-button {
-    position: fixed;
-    bottom: 0px;
-    right: 0px;
-    margin-bottom: 20px;
-    margin-right: 20px;
+.todotxt__header {
+    min-height: 50px;
 }
-
+.todotxt__header .mdl-layout__header-row {
+    height: 50px;
+}
 .todotxt__grid {
     max-width: 800px;
+    min-width: 300px;
 }
 
 .todotxt__list {
     width: 100%;
+    white-space: initial;
 }
 
 .todotxt__item td:first-child {
     width: 1%;
+    vertical-align: middle;
+    padding: 0px 14px;
 }
 
 .todotxt__item.js-done {

@@ -25,23 +25,29 @@
 </head>
 <body>
     <div class="todotxt mdl-layout mdl-js-layout mdl-layout--fixed-header">
-        <header class="mdl-layout__header">
+        <header class="todotxt__header mdl-layout__header">
             <div class="mdl-layout-icon"><i class="material-icons">assignment turned in</i></div>
             <div class="mdl-layout__header-row">
                 <span class="mdl-layout-title">todo.txt</span>
             </div>
         </header>
         <main class="mdl-layout__content">
-            <div id="content" class="todotxt__grid mdl-grid">
+            <div class="todotxt__grid mdl-grid">
+                <div id="content" class="mdl-cell mdl-cell--12-col"></div>
             </div>
             <div id="edit">
             </div>
-            <button class="js-add-button mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
--                <i class="material-icons">add</i>
-            <button class="js-save-button mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+        </main>
+        <footer class="mdl-mini-footer">
+        <div class="mdl-mini-footer__right-section">
+            <button class="js-add-button mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                <i class="material-icons">add</i>
+            </button>
+            <button class="js-save-button mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
                 <i class="material-icons">save</i>
             </button>
-        </main>
+        </div>
+        </footer>
     </div>
     <script id="todo-list" type="text/template">
     <tbody>
