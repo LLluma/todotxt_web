@@ -76,30 +76,6 @@ class RequestHandlerProxy(RequestHandler):
 
     executor = ThreadPoolExecutor(max_workers=MAX_WORKERS)
 
-    @method_proxy
-    def get(self, *args, **kwargs):
-        return super(RequestHandlerProxy, self).get(*args, **kwargs)
-
-    @method_proxy
-    def post(self, *args, **kwargs):
-        return super(RequestHandlerProxy, self).post(*args, **kwargs)
-
-    @method_proxy
-    def delete(self, *args, **kwargs):
-        return super(RequestHandlerProxy, self).delete(*args, **kwargs)
-
-    @method_proxy
-    def put(self, *args, **kwargs):
-        return super(RequestHandlerProxy, self).put(*args, **kwargs)
-
-    @method_proxy
-    def head(self, *args, **kwargs):
-        return super(RequestHandlerProxy, self).head(*args, **kwargs)
-
-    @method_proxy
-    def options(self, *args, **kwargs):
-        return super(RequestHandlerProxy, self).options(*args, **kwargs)
-
 
 class MainHandler(RequestHandlerProxy):
 
@@ -114,15 +90,22 @@ class TodoHandler(RequestHandlerProxy):
         self.todo = todo_txt.TodoTxt(options.todo_file)
 
     @authenticated
-    def get(self):
+    def get(self, **kwargs):
         result_encoded = json_encode(self.todo.serialize())
         self.write(result_encoded)
 
     @authenticated
-    def post(self):
+    @method_proxy
+    def post(self, **kwargs):
         todo_list = json_decode(self.request.body)
         self.todo.unserialize(todo_list)
         self.write('saved')
+
+    @authenticated
+    def archive(self):
+        """Save todo.txt and move all done items to done.txt"""
+        todo_list = json_decode(self.request.body)
+        self.todo.unserialize(todo_list)
 
 
 class LoginHandler(RequestHandlerProxy):
@@ -144,7 +127,7 @@ class TodoApplication(Application):
     def __init__(self, secret_file='secret', password_file='password', debug_mode=False):
         handlers = [
             url(r"/", MainHandler),
-            url(r"/todo/", TodoHandler),
+            url(r"/todo/?(?P<method>.*)?", TodoHandler),
             url(r"/login", LoginHandler),
         ]
         settings = dict(

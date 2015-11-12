@@ -51,7 +51,17 @@ TodoModel = Backbone.Model.extend({
 
 TodoCollection = Backbone.Collection.extend({
     url: '/todo/',
-    model: TodoModel
+    model: TodoModel,
+    action: function(e, action_name, opts) {
+        var self = this;
+        var url = self.url + action_name;
+        // note that these are just $.ajax() options
+        _.extend(opts, {
+            url: url,
+            type: 'POST'
+        });
+        return (this.sync || Backbone.sync).call(this, null, this, opts);
+    }
 });
 
 TodoItemView = Backbone.Marionette.ItemView.extend({
@@ -126,6 +136,9 @@ TodoCompositeView = Backbone.Marionette.CompositeView.extend({
         TodoTxtApp.vent.on('todo:add', function(e, model) {
             self.addTask(e, model);
         });
+        TodoTxtApp.vent.on('todo:archive', function(e, model) {
+            self.archiveTodo(e, model);
+        });
         TodoTxtApp.vent.on('todo:new', function(model) {
             self.collection.add(model);
             self.saveTodo();
@@ -134,6 +147,14 @@ TodoCompositeView = Backbone.Marionette.CompositeView.extend({
     saveTodo: function(e) {
         var self = this;
         self.collection.sync('create', self.collection);
+    },
+    archiveTodo: function(e) {
+        var self = this;
+        console.log(self.collection.toJSON());
+        self.collection.action(e, 'archive', {
+            data: JSON.stringify(self.collection.toJSON()),
+            dataType: 'json'
+        });
     },
     addTask: function(e, model) {
         var self = this;

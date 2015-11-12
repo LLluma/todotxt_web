@@ -18,6 +18,9 @@ TodoTxtApp.addInitializer(function() {
     $('body').on('click', '.js-save-button', function(e) {
         self.vent.trigger('todo:save', e);
     });
+    $('body').on('click', '.js-archive-button', function(e) {
+        self.vent.trigger('todo:archive', e);
+    });
 });
 
 $(function() {
