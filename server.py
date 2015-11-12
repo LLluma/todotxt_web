@@ -19,6 +19,7 @@ SECRET_LENGTH = 40
 
 import todo_txt
 
+define("debug", default=False, help="Debug mode")
 define("port", default="8880", help="Worker port number")
 define("config", help="Config file name", default="default_config.py")
 define("todo_file", help="todo.txt file path")
@@ -140,7 +141,7 @@ class LoginHandler(RequestHandlerProxy):
 
 class TodoApplication(Application):
 
-    def __init__(self, secret_file='secret', password_file='password'):
+    def __init__(self, secret_file='secret', password_file='password', debug_mode=False):
         handlers = [
             url(r"/", MainHandler),
             url(r"/todo/", TodoHandler),
@@ -151,6 +152,7 @@ class TodoApplication(Application):
             static_path=os.path.join('static'),
             cookie_secret=get_secret(secret_file),
             password_file=password_file,
+            debug=debug_mode,
             login_url='/login',
         )
         super(TodoApplication, self).__init__(handlers, **settings)
@@ -183,7 +185,7 @@ def main():
     options.parse_command_line()
     if options.config:
         options.parse_config_file(options.config)
-    app = make_app()
+    app = make_app(debug_mode=options.debug)
     start_app(app)
 
 
