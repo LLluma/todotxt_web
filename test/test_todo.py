@@ -47,8 +47,11 @@ class TestTodoTxt(unittest.TestCase):
 
     def test_iter_todo(self):
         """Test __iter__ of todo object"""
+        self.todo.add("Line 1")
+        self.todo.add("Line 2")
         for line in self.todo:
             self.assertIsInstance(line, basestring)
+        self.assertIn("Line 1", self.todo)
 
     def test_serialize_line(self):
         """Test serializing text line to representing dictionary"""
