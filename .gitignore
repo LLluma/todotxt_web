@@ -63,3 +63,6 @@ data/todo.txt.bkp
 secret
 password
 test/password
+test/done.txt
+data/done.txt
+test/test_todo.txt.bkp

@@ -150,11 +150,18 @@ TodoCompositeView = Backbone.Marionette.CompositeView.extend({
     },
     archiveTodo: function(e) {
         var self = this;
-        console.log(self.collection.toJSON());
         self.collection.action(e, 'archive', {
             data: JSON.stringify(self.collection.toJSON()),
-            dataType: 'json'
+            dataType: 'json',
+            success: function(result) {
+                self.update_view(result);
+            }
         });
+    },
+    update_view: function(result) {
+        var self = this;
+        self.collection.reset(result);
+        self.render();
     },
     addTask: function(e, model) {
         var self = this;

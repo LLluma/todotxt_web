@@ -16,6 +16,8 @@ class TestTodoTxt(unittest.TestCase):
         self.todo = todo_txt.TodoTxt(TXT_FILE)
 
     def tearDown(self):
+        if os.path.exists(self.todo.done_txt.file_name):
+            os.remove(self.todo.done_txt.file_name)
         if os.path.exists(TXT_FILE):
             os.remove(TXT_FILE)
         if os.path.exists(TXT_FILE + todo_txt.BACKUP_EXT):
@@ -42,23 +44,6 @@ class TestTodoTxt(unittest.TestCase):
         self.todo.done(record)
         with open(self.todo.file_name) as todo_fh:
             self.assertIn('x ' + record, todo_fh.read(), msg="Marked record not found")
-
-    def test_clean(self):
-        """Test clean() method which remove all records which marked as
-        'done'
-        """
-        record1 = "A record which will be removed from todo.txt"
-        record2 = "A second record which should be exists after cleaning of todo.txt"
-        self.todo.add(record1)
-        self.todo.add(record2)
-        self.todo.done(record1)
-        self.todo.clean()
-        with open(self.todo.file_name) as todo_fh:
-            self.assertNotIn('x ' + record1, todo_fh.read(),
-                             msg="Marked record is not cleaned")
-        with open(self.todo.file_name) as todo_fh:
-            self.assertIn(record2, todo_fh.read(),
-                          msg="The second record does not exist in todo.txt file")
 
     def test_iter_todo(self):
         """Test __iter__ of todo object"""
@@ -109,6 +94,20 @@ class TestTodoTxt(unittest.TestCase):
             {'done': False, 'line': 'Text of line 2', 'contexts': [], 'projects': []}
         ]
         self.todo.unserialize(todo_list)
-        self.assertIn("x Text of line +project_1 @home @work\n", [line for line in self.todo])
+        self.assertIn("x Text of line +project_1 @home @work", self.todo)
+
+    def test_done_txt(self):
+        self.assertIsInstance(self.todo.done_txt, todo_txt.TodoTxt)
+
+    def test_archive(self):
+        self.todo.add("x Done record 1")
+        self.todo.add("Record 1")
+        self.todo.add("x Done record 2")
+        self.todo.archive()
+        self.assertIn("Record 1", self.todo)
+        self.assertNotIn("x Done record 1", self.todo)
+        self.assertNotIn("x Done record 2", self.todo)
+        self.assertIn("x Done record 1", self.todo.done_txt)
+        self.assertIn("x Done record 2", self.todo.done_txt)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

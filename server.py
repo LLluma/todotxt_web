@@ -106,6 +106,9 @@ class TodoHandler(RequestHandlerProxy):
         """Save todo.txt and move all done items to done.txt"""
         todo_list = json_decode(self.request.body)
         self.todo.unserialize(todo_list)
+        self.todo.archive()
+        result_encoded = json_encode(self.todo.serialize())
+        self.write(result_encoded)
 
 
 class LoginHandler(RequestHandlerProxy):

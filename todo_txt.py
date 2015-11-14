@@ -4,12 +4,17 @@ import shutil
 from contextlib import contextmanager
 
 BACKUP_EXT = '.bkp'
+DEFAULT_DONE_FILE = 'done.txt'
 
 
 class TodoTxt(object):
     """Wrapper Class for manipulating todo.txt"""
 
-    def __init__(self, file_name):
+    def __init__(self, file_name, done_file_name=None):
+        if not done_file_name:
+            done_file_name = os.path.join(os.path.dirname(file_name), DEFAULT_DONE_FILE)
+        if done_file_name != file_name:
+            self.done_txt = TodoTxt(done_file_name)
         self.file_name = file_name
         if not os.path.exists(file_name):
             open(file_name, 'a').close()
@@ -45,18 +50,10 @@ class TodoTxt(object):
                     line = 'x ' + line
                 todo_fh.write(line)
 
-    def clean(self):
-        """Remove all records which are marked as done"""
-        with self._get_handlers() as (todo_fh, backup_fh):
-            for line in backup_fh:
-                if line.startswith('x '):
-                    continue
-                todo_fh.write(line)
-
     def __iter__(self):
         with open(self.file_name) as todo_fh:
             for line in todo_fh:
-                yield line
+                yield line.strip()
 
     @staticmethod
     def serialize_line(line):
@@ -107,6 +104,15 @@ class TodoTxt(object):
         with self._get_handlers() as (todo_fh, backup_fh):
             for line_dict in todo_list:
                 todo_fh.write(self.unserialize_line(line_dict).encode('UTF-8') + "\n")
+
+    def archive(self):
+        """Move done items to done.txt"""
+        with self._get_handlers() as (todo_fh, backup_fh):
+            for line in backup_fh:
+                if not line.startswith('x '):
+                    todo_fh.write(line)
+                else:
+                    self.done_txt.add(line)
 
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
