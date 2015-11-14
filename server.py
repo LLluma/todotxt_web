@@ -130,7 +130,7 @@ class TodoApplication(Application):
     def __init__(self, secret_file='secret', password_file='password', debug_mode=False):
         handlers = [
             url(r"/", MainHandler),
-            url(r"/todo/?(?P<method>.*)?", TodoHandler),
+            url(r"/todo/?(?P<method>.*)", TodoHandler),
             url(r"/login", LoginHandler),
         ]
         settings = dict(
