@@ -58,7 +58,7 @@ class TestTodoHandler(TestHandlerBase):
     def test_todo_archive(self):
         cookies = self.get_login_cookies()
         archive_data = [
-            {'done': False, 'line': "Not done task 1"},
+            {'done': False, 'line': "Not done   task 1"},
             {'done': True, 'line': "Done task 1"},
             {'done': False, 'line': "Not done task 2"},
             {'done': True, 'line': "Done task 2"},

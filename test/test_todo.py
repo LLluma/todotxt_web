@@ -101,7 +101,7 @@ class TestTodoTxt(unittest.TestCase):
 
     def test_archive(self):
         self.todo.add("x Done record 1")
-        self.todo.add("Record 1")
+        self.todo.add("Record 1  ")
         self.todo.add("x Done record 2")
         self.todo.archive()
         self.assertIn("Record 1", self.todo)
