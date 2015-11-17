@@ -3,7 +3,8 @@ TodoModel = Backbone.Model.extend({
         line: '',
         done: false,
         projects: [],
-        contexts: []
+        contexts: [],
+        prioritet: ''
     },
     toJSON: function() {
         var json = Backbone.Model.prototype.toJSON.apply(this, arguments);
@@ -15,7 +16,8 @@ TodoModel = Backbone.Model.extend({
             line: '',
             done: false,
             projects: [],
-            contexts: []
+            contexts: [],
+            prioritet: '',
         };
         var line_words = [];
         if (line.startsWith("x ")) {
@@ -27,6 +29,8 @@ TodoModel = Backbone.Model.extend({
                 result.projects.push(word);
             } else if (word.startsWith('@')) {
                 result.contexts.push(word);
+            } else if ( /\([A-Z]\)/.test(word) ) {
+                result.prioritet = word;
             } else {
                 line_words.push(word);
             }
@@ -41,6 +45,9 @@ TodoModel = Backbone.Model.extend({
         var line = [];
         if (obj.done) {
             line.push("x");
+        }
+        if (obj.prioritet) {
+            line.push(obj.prioritet);
         }
         line.push(obj.line);
         line = line.concat(obj.projects);
@@ -111,7 +118,6 @@ TodoEditItemView = Backbone.Marionette.ItemView.extend({
     serializeData: function() {
         var result = this.constructor.__super__.serializeData.call(this);
         result.unserialized = this.model.unserialize(result);
-        console.log(result.unserialized);
         return result
     },
     saveItem: function(e) {

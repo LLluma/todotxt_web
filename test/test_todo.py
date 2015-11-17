@@ -55,9 +55,11 @@ class TestTodoTxt(unittest.TestCase):
 
     def test_serialize_line(self):
         """Test serializing text line to representing dictionary"""
-        line = "Some text line"
+        line = "(A) Some text line"
         self.assertIn('line', self.todo.serialize_line(line))
         self.assertIn('done', self.todo.serialize_line(line))
+        self.assertIn('prioritet', self.todo.serialize_line(line))
+        self.assertEqual('(A)', self.todo.serialize_line(line)['prioritet'])
         self.assertFalse(self.todo.serialize_line(line)['done'])
         self.assertTrue(self.todo.serialize_line('x ' + line)['done'])
         self.assertTrue(self.todo.serialize_line('x       ' + line)['done'])
@@ -83,21 +85,24 @@ class TestTodoTxt(unittest.TestCase):
         self.assertIsInstance(first_line, dict)
 
     def test_unserialize_line(self):
-        line_dict = {'done': True, 'line': 'Text of line',
-                     'contexts': ['@home', '@work'], 'projects': ['+project_1']}
-        self.assertEqual("x Text of line +project_1 @home @work",
+        line_dict = {
+            'done': True, 'line': 'Text of line',
+            'contexts': ['@home', '@work'], 'projects': ['+project_1'],
+            'prioritet': '(D)',
+        }
+        self.assertEqual("x (D) Text of line +project_1 @home @work",
                          self.todo.unserialize_line(line_dict))
         line_dict = {'done': False, 'line': 'Text of line 2', 'projects': ['+project_1']}
         self.assertEqual("Text of line 2 +project_1", self.todo.unserialize_line(line_dict))
 
     def test_unserialize(self):
         todo_list = [
-            {'done': True, 'line': 'Text of line',
+            {'done': True, 'line': 'Text of line 33', 'prioritet': '(A)',
              'contexts': ['@home', '@work'], 'projects': ['+project_1']},
             {'done': False, 'line': 'Text of line 2', 'contexts': [], 'projects': []}
         ]
         self.todo.unserialize(todo_list)
-        self.assertIn("x Text of line +project_1 @home @work", self.todo)
+        self.assertIn("x (A) Text of line 33 +project_1 @home @work", self.todo)
 
     def test_done_txt(self):
         self.assertIsInstance(self.todo.done_txt, todo_txt.TodoTxt)

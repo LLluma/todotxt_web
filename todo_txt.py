@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+import re
 import shutil
 from contextlib import contextmanager
 
@@ -58,7 +59,12 @@ class TodoTxt(object):
     @staticmethod
     def serialize_line(line):
         """Converting text line to representing dictionary"""
-        result = {'projects': [], 'contexts': [], 'done': False}
+        result = {
+            'projects': [],
+            'contexts': [],
+            'done': False,
+            'prioritet': '',
+        }
         line = line.strip()
         if line.startswith('x '):
             line = line[2:].strip()
@@ -66,6 +72,9 @@ class TodoTxt(object):
         words = []
         for word in line.split(' '):
             if not word:
+                continue
+            if re.match(r'\([A-Z]\)', word):
+                result['prioritet'] = word
                 continue
             if word.startswith('+'):
                 result['projects'].append(word)
@@ -92,6 +101,8 @@ class TodoTxt(object):
         result = ''
         if line_dict.get('done'):
             result += 'x '
+        if line_dict.get('prioritet'):
+            result += line_dict['prioritet'] + ' '
         result += line_dict.get('line', '')
         for project in line_dict.get('projects', []):
             result += ' ' + project

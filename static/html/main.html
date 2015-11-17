@@ -64,8 +64,8 @@
                 />
             </label>
         </td>
-        <td class="mdl-data-table__cell--non-numeric">
-            <%= line %>
+        <td class="mdl-data-table__cell--non-numeric<%= prioritet ? ' todo-item--prioritized' : '' %>">
+            <%= prioritet %> <%= line %>
             <span class="project"><% _.each(projects, function(project) {print(' ' + project)}); %></span>
             <span class="context"><% _.each(contexts, function(context) {print(' ' + context)}); %></span>
         </td>

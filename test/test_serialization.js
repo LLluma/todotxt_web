@@ -7,7 +7,7 @@ describe("Serialization functions", function() {
     });
 
     it("should get text and returns an object", function() {
-        var input_line = "Some todo line +todo +proj2 @home"
+        var input_line = "(Z) Some todo line +todo +proj2 @home"
         expect(todo_model.serialize).toBeDefined();
         expect(todo_model.serialize(input_line).line).toBeDefined();
         expect(todo_model.serialize(input_line).line).toBe("Some todo line");

@@ -40,6 +40,10 @@
     padding: 0 !important;
 }
 
+.todo-item--prioritized {
+    font-weight: bold;
+}
+
 #edit {
     position: relative;
 }
