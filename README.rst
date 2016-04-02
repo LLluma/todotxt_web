@@ -8,5 +8,12 @@ todotxt_web
 
 Web implementation of todo.txt concept
 
-**Usage**:
-    *./server.py --config=default_config.py*
+Instalation
+-----------
+
+sudo pip install -r requirements.txt
+
+Usage
+-----
+
+*./server.py --config=default_config.py*
